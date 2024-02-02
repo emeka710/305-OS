@@ -10,6 +10,7 @@ macro_rules! print {
         use core::fmt::Write;
         write!($crate::FRAME_BUFFER_WRITER.lock(), "{}", format_args!($($arg)*)).unwrap();
     }};
+    
 }
 
 #[macro_export]
@@ -23,6 +24,27 @@ macro_rules! println {
         write!($crate::FRAME_BUFFER_WRITER.lock(), "{}", format_args_nl!($($arg)*)).unwrap();
     }};
 }
+
+// #[macro_export]
+// macro_rules! might_print {
+//     ($($input:tt),*) => {
+//         let input = input_str(); // Call the function to get user input
+//         use core::fmt::Write;
+//         write!($crate::FRAME_BUFFER_WRITER.lock(), "You gave me: {}", $($input),*).unwrap();
+//     };
+// }
+
+#[macro_export]
+macro_rules! might_print {
+    ($arg:expr) => { {// Empty argument list to avoid capturing unintended input
+        
+        use core::fmt::Write;
+        write!($crate::FRAME_BUFFER_WRITER.lock(), "{}",$arg ).unwrap();
+        let input = input_str();
+        input.unwrap()
+    }};
+}
+
 
 pub fn input_str() -> Option<String> {
     let mut input: String = "".to_string();
